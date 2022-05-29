@@ -7,6 +7,10 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        
+        <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Margin="85,197,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Height="20" Width="88"/>
+        <TextBlock x:Name="textBlock_Copy" HorizontalAlignment="Left" Margin="192,197,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Height="20" Width="88"/>
+        <TextBlock x:Name="textBlock_Copy1" HorizontalAlignment="Left" Margin="308,197,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Height="20" Width="88"/>
+        <Button x:Name="button" Content="Button" HorizontalAlignment="Left" Margin="85,112,0,0" VerticalAlignment="Top" Height="32" Width="63" Click="button_Click"/>
+
     </Grid>
 </Window>

@@ -20,9 +20,17 @@ namespace TodoList
     /// </summary>
     public partial class MainWindow : Window
     {
+        int i = 0;
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        private void button_Click(object sender, RoutedEventArgs e)
+        {
+            
+            textBlock.Text = i.ToString();
+            i++;
         }
     }
 }
