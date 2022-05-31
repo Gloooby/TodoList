@@ -59,10 +59,10 @@ namespace TodoList
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show("Error: " + ex.Message);
             }
-}
-        
+        }
+
 
         private void takeData(bool reOrderd)
         {
@@ -81,7 +81,7 @@ namespace TodoList
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show("Error: " + ex.Message);
             }
         }
         public MainWindow()
