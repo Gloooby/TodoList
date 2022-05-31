@@ -24,89 +24,132 @@ namespace TodoList
     /// </summary>
     public partial class MainWindow : Window
     {
-        int i = 0;
         private static string connStr;
-        private SQLiteConnection sqLiteConnection = null;
         private SQLiteDataAdapter sqLiteDataAdapter = null;
-        private SQLiteCommandBuilder sqLiteBuilder = null;
         private DataSet dataSet = null;
+        private SQLiteConnection conn = null;
+        private SQLiteCommand sqlCommand = new SQLiteCommand();
         private void create()
         {
-            string baseName = "Todolist.db";
-
-            SQLiteConnection.CreateFile(baseName);
-
-            SQLiteFactory factory = (SQLiteFactory)DbProviderFactories.GetFactory("System.Data.SQLite");
-            using (SQLiteConnection connection = (SQLiteConnection)factory.CreateConnection())
+            try
             {
-                connection.ConnectionString = "Data Source = " + baseName;
-                connection.Open();
+                string baseName = "Todolist.db";
 
-                using (SQLiteCommand command = new SQLiteCommand(connection))
+                SQLiteConnection.CreateFile(baseName);
+
+                SQLiteFactory factory = (SQLiteFactory)DbProviderFactories.GetFactory("System.Data.SQLite");
+                using (SQLiteConnection connection = (SQLiteConnection)factory.CreateConnection())
                 {
-                    command.CommandText =
-                    @"CREATE TABLE [Todolist](
-                    [Id]    INTEGER NOT NULL,
-                    [Text]  TEXT,
-                    [Time]  TEXT,
-                    PRIMARY KEY([Id] AUTOINCREMENT)
-                    );";
-                    command.CommandType = CommandType.Text; 
-                    //@"CREATE TABLE [Todolist] (
-                    //[Id] integer PRIMARY KEY AUTOINCREMENT NOT NULL,
-                    //[Text] char(250) NOT NULL,
-                    //[Time] char(100) NOT NULL
-                    //);";
-                    command.ExecuteNonQuery();
+                    connection.ConnectionString = "Data Source = " + baseName;
+                    connection.Open();
+
+                    using (SQLiteCommand command = new SQLiteCommand(connection))
+                    {
+                        command.CommandText =
+                        @"CREATE TABLE [Todolist](
+                        [Id]    INTEGER NOT NULL,
+                        [Text]  TEXT,
+                        [Time]  TEXT,
+                        PRIMARY KEY([Id] AUTOINCREMENT)
+                        );";
+                        command.CommandType = CommandType.Text;
+                        command.ExecuteNonQuery();
+                    }
                 }
             }
-        }
-        public static class SQLiteConnectionString
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+}
+        
+
+        private void takeData(bool reOrderd)
         {
-
-            public static string GetConnectionString(string path)
+            try
             {
-                return GetConnectionString(path, null);
+                if (reOrderd)
+                {
+                    connStr = "Data Source=.\\Todolist.db";
+                    conn = new SQLiteConnection(connStr);
+                    conn.Open();
+                    sqlCommand.Connection = conn;
+                }
+                dataSet = new DataSet();
+                sqLiteDataAdapter = new SQLiteDataAdapter("SELECT * FROM Todolist ORDER BY Time", conn);
+                sqLiteDataAdapter.Fill(dataSet, "Todolist");
             }
-
-            public static string GetConnectionString(string path, string password)
+            catch (Exception ex)
             {
-                if (string.IsNullOrEmpty(password))
-                {
-                    return "Data Source=" + path;
-                }
-                else
-                {
-                    return "Data Source=" + path + ";Password=" + password;
-                }
+                MessageBox.Show(ex.Message);
             }
-
-        }
-
-        private void add()
-        {
-            connStr = SQLiteConnectionString.GetConnectionString(".\\Todolist.db");
-            SQLiteConnection conn = new SQLiteConnection(connStr);
-
-            dataSet = new DataSet();
-            sqLiteDataAdapter = new SQLiteDataAdapter("SELECT * FROM Todolist ORDER BY Time", conn);
-            sqLiteBuilder = new SQLiteCommandBuilder(sqLiteDataAdapter);
-            sqLiteBuilder.GetUpdateCommand();
-            sqLiteBuilder.GetDeleteCommand();
-            sqLiteDataAdapter.Fill(dataSet, "Todolist");
-            textBlock_Copy1.Text = dataSet.Tables["Todolist"].Rows.Count.ToString();
-            textBlock_Copy.Text = dataSet.Tables["Todolist"].Rows[0]["Text"].ToString();
         }
         public MainWindow()
         {
             InitializeComponent();
+
+            initDB();
+        }
+
+        private void initDB()
+        {
+            if (!File.Exists(".\\Todolist.db"))
+            {
+                create();
+            }
+            takeData(true);
+        }
+
+        private void addNewElem(string text, DateTime date)
+        {
+            if (conn.State != ConnectionState.Open)
+            {
+                MessageBox.Show("Open connection with database");
+                return;
+            }
+
+            try
+            {
+                sqlCommand.CommandText = "INSERT INTO Todolist ('Text', 'Time') values ('" +
+                    text + "' , '" +
+                    date + "')";
+
+                sqlCommand.ExecuteNonQuery();
+                takeData(false);
+            }
+            catch (SQLiteException ex)
+            {
+                MessageBox.Show("Error: " + ex.Message);
+            }
+        }
+        private void removeElem(int nelem)
+        {
+            if (conn.State != ConnectionState.Open)
+            {
+                MessageBox.Show("Open connection with database");
+                return;
+            }
+
+            try
+            {
+                sqlCommand.CommandText = "DELETE FROM `Todolist` WHERE `ID` = " + nelem + " LIMIT 1";
+
+                sqlCommand.ExecuteNonQuery();
+                takeData(false);
+            }
+            catch (SQLiteException ex)
+            {
+                MessageBox.Show("Error: " + ex.Message);
+            }
         }
 
         private void button_Click(object sender, RoutedEventArgs e)
         {
-            add();
-            textBlock.Text = i.ToString();
-            i++;
+            //textBlock_Copy.Text = dataSet.Tables["Todolist"].Rows[0]["Text"].ToString();
+            removeElem(1);
+            addNewElem("треня2", DateTime.Now);
+            textBlock.Text = dataSet.Tables["Todolist"].Rows[0]["Text"].ToString();
+            textBlock_Copy1.Text = dataSet.Tables["Todolist"].Rows[0]["Time"].ToString();
         }
     }
 }
