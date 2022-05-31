@@ -14,3 +14,12 @@ E:\Semestr2\Прогр\Курсач\TodoList\TodoList\TodoList\obj\Debug\TodoLis
 E:\Semestr2\Прогр\Курсач\TodoList\TodoList\TodoList\obj\Debug\TodoList.csproj.CoreCompileInputs.cache
 E:\Semestr2\Прогр\Курсач\TodoList\TodoList\TodoList\obj\Debug\TodoList.exe
 E:\Semestr2\Прогр\Курсач\TodoList\TodoList\TodoList\obj\Debug\TodoList.pdb
+E:\Semestr2\Прогр\Курсач\TodoList\TodoList\TodoList\bin\Debug\EntityFramework.dll
+E:\Semestr2\Прогр\Курсач\TodoList\TodoList\TodoList\bin\Debug\EntityFramework.SqlServer.dll
+E:\Semestr2\Прогр\Курсач\TodoList\TodoList\TodoList\bin\Debug\System.Data.SQLite.dll
+E:\Semestr2\Прогр\Курсач\TodoList\TodoList\TodoList\bin\Debug\System.Data.SQLite.EF6.dll
+E:\Semestr2\Прогр\Курсач\TodoList\TodoList\TodoList\bin\Debug\System.Data.SQLite.Linq.dll
+E:\Semestr2\Прогр\Курсач\TodoList\TodoList\TodoList\bin\Debug\EntityFramework.xml
+E:\Semestr2\Прогр\Курсач\TodoList\TodoList\TodoList\bin\Debug\EntityFramework.SqlServer.xml
+E:\Semestr2\Прогр\Курсач\TodoList\TodoList\TodoList\bin\Debug\System.Data.SQLite.xml
+E:\Semestr2\Прогр\Курсач\TodoList\TodoList\TodoList\obj\Debug\TodoList.csproj.CopyComplete
